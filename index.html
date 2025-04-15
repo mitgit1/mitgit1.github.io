@@ -202,6 +202,18 @@
             background: transparent;
         }
 
+        .tiktok-link {
+            color: #00CED1;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .tiktok-link:hover {
+            opacity: 0.8;
+        }
+
         @keyframes slideIn {
             from { 
                 transform: translate(100%, 100%); 
@@ -240,12 +252,26 @@
         <button class="action-btn news-btn">Новости</button>
         <button class="action-btn videos-btn">Новые видео</button>
         <button class="action-btn about-btn">Подробно обо мне</button>
-        <button class="action-btn">Блог</button>
+        <button class="action-btn blog-btn">Блог</button>
         <button class="action-btn support-btn">Поддержка</button>
         <button class="action-btn weapons-btn">Купить оружие</button>
     </div>
 
-    <!-- Модальные окна -->
+    <!-- Модальное окно "Блог" -->
+    <div class="modal-overlay blog-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <p style="text-align: center;">
+                <a class="tiktok-link" 
+                   href="https://www.tiktok.com/@nockbox?_t=ZS-8vYJuBTEXvr&_r=1" 
+                   target="_blank">
+                    Tik Tok
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Остальные модальные окна -->
     <div class="modal-overlay weapons-modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -407,8 +433,8 @@
                         <h2>Обо мне</h2>
                         <p style="margin-top: 1rem;">
                             Привет! Я не хакер.<br>
-                            Я люблю пожарную сигнализацию, литфты<br>
-                            домофоны, и конечно же м5 стик :)
+                            Просто люблю технологии, игры<br>
+                            и эксперименты с электроникой
                         </p>
                         <canvas id="oscilloscope"></canvas>
                     </div>
@@ -453,12 +479,14 @@
             draw();
         }
 
+        // Обработчики кнопок
         document.querySelector('.weapons-btn').addEventListener('click', () => showModal('weapons'));
         document.querySelector('.projects-btn').addEventListener('click', () => showModal('projects'));
         document.querySelector('.contacts-btn').addEventListener('click', () => showModal('contacts'));
         document.querySelector('.news-btn').addEventListener('click', () => showModal('news'));
         document.querySelector('.videos-btn').addEventListener('click', () => showModal('videos'));
         document.querySelector('.about-btn').addEventListener('click', () => showModal('about'));
+        document.querySelector('.blog-btn').addEventListener('click', () => showModal('blog'));
         document.querySelector('.support-btn').addEventListener('click', () => {
             window.open('https://www.donationalerts.com/r/mitgit', '_blank');
         });
