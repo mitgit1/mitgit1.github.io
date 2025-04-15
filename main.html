@@ -60,18 +60,6 @@
             opacity: 0;
             animation: lineAppear 0.5s forwards;
         }
-        .build-version {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 12px;
-            color: #00ff80;
-            opacity: 0.7;
-            text-shadow: 0 0 5px #00ff80;
-            z-index: 100;
-            font-family: 'Courier New', monospace;
-            pointer-events: none;
-}
 
         .spinner {
             width: 20px;
@@ -199,7 +187,18 @@
         .close-btn:hover {
             color: #ff0000;
         }
-
+		.build-version {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			font-size: 12px;
+			color: #00ff80;
+			opacity: 0.7;
+			text-shadow: 0 0 5px #00ff80;
+			z-index: 100;
+			font-family: 'Courier New', monospace;
+		pointer-events: none;
+		}
         .weapons-text {
             color: #ff0000;
             font-weight: bold;
@@ -251,7 +250,7 @@
 </head>
 <body>
     <canvas id="matrix-canvas"></canvas>
-    <div class="build-version">build 0001</div>
+    
     <h1 class="main-title">M5 Недо-хакер</h1>
 
     <div class="boot-container">
@@ -313,8 +312,8 @@
             <p style="color: #00ff80; background: linear-gradient(45deg, #3a9a3a, #7cfc00);
                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                 Электронная почта - mitgit2013@gmail.com<br>
-                Телеграм - @mitgit_m5<br>
-                GitHub - mitgit1
+                Телеграм - @m5_robot<br>
+                GitHub - m5-hacker
             </p>
         </div>
     </div>
@@ -324,9 +323,9 @@
             <span class="close-btn">&times;</span>
             <p style="color: #00ff80; background: linear-gradient(45deg, #3a9a3a, #7cfc00);
                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                🚀 Едет М5 СТИК!! <br><br>
-                🔥 В разработке: Сервер<br><br>
-                💡 Вроде всё :)
+                🚀 Новый проект: Робот-сортировщик мусора<br><br>
+                🔥 В разработке: Система умного дома<br><br>
+                💡 Последний эксперимент: Лазерная арфа
             </p>
         </div>
     </div>
@@ -337,37 +336,26 @@
             <p style="color: #00ff80; background: linear-gradient(45deg, #3a9a3a, #7cfc00);
                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                 🎥                              <br><br>
-                📹            пока ничего       <br><br>
+                📹          Ничего нового!      <br><br>
                 🎬
             </p>
         </div>
     </div>
-
+    <div class="build-version">build 0001</div>
     <div class="modal-overlay about-modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <p style="color: #00ff80; background: linear-gradient(45deg, #3a9a3a, #7cfc00);
                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                🔧 Почти год занимаюсь серверами<br><br>
-                🤖 Живу в Ижевске<br><br>
-                💻 Часто гуляю с друзьями<br><br>
+                🔧 Живу в ижевске!)<br><br>
+                🤖 Создал 1 проект!<br><br>
+                💻 Люблю гулять с друзьями<br><br>
                 🎮 Не люблю ВПР!)
             </p>
         </div>
     </div>
 
     <script>
-        document.querySelector('.weapons-btn').addEventListener('click', () => showModal('weapons'));
-        document.querySelector('.projects-btn').addEventListener('click', () => showModal('projects'));
-        document.querySelector('.contacts-btn').addEventListener('click', () => showModal('contacts'));
-        document.querySelector('.news-btn').addEventListener('click', () => showModal('news'));
-        document.querySelector('.videos-btn').addEventListener('click', () => showModal('videos'));
-        document.querySelector('.about-btn').addEventListener('click', () => showModal('about'));
-        document.querySelector('.blog-btn').addEventListener('click', () => showModal('blog'));
-        document.querySelector('.support-btn').addEventListener('click', () => {
-        window.open('https://www.donationalerts.com/r/mitgit', '_blank');
-        });
-        document.querySelector('.info-btn').addEventListener('click', () => showModal('info'));
         document.addEventListener('wheel', function(e) {
             if (e.ctrlKey) return;
             if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
