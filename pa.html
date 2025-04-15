@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Experience</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: -1;
+        }
+
+        .content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: 900;
+            text-align: center;
+            margin: 20px;
+            background: linear-gradient(135deg, #6b8e23, #7fff00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(127, 255, 0, 0.3);
+        }
+
+        .matrix-button {
+            width: 200px;
+            height: 200px;
+            background: #08f7fe;
+            border: none;
+            cursor: pointer;
+            margin: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: white;
+            font-weight: 900;
+            font-size: 1.5em;
+            text-transform: uppercase;
+        }
+
+        .matrix-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00c234;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.5em;
+            }
+            .matrix-button {
+                width: 150px;
+                height: 150px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    
+    <div class="content">
+        <div class="title">Используйте ПК для лучшей атмосферы</div>
+        <button class="matrix-button" onclick="window.location.href='https://mitgit1.github.io/main'">ПРОДОЛЖУ ТАК</button>
+    </div>
+
+    <script>
+        // Matrix rain animation
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = 'ｦｧｨｩｪｫｬｭｮｯｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
+        const drops = [];
+        const fontSize = 14;
+        const columns = canvas.width/fontSize;
+
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for(let i = 0; i < drops.length; i++) {
+                const text = katakana[Math.floor(Math.random() * katakana.length)];
+                ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+
+                if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(draw, 50);
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
