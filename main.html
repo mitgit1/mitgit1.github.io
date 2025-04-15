@@ -214,43 +214,6 @@
             opacity: 0.8;
         }
 
-        .mobile-warning {
-            background: rgba(0, 30, 0, 0.95);
-        }
-
-        .mobile-warning-content {
-            text-align: center;
-            padding: 2rem;
-            max-width: 300px;
-        }
-
-        .mobile-text {
-            color: #00ff80;
-            margin-bottom: 2rem;
-            font-size: 1.2em;
-        }
-
-        .mobile-continue-btn {
-            background: #00ff80;
-            color: #001100;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.3s;
-            width: 100%;
-            font-size: 1.1em;
-        }
-
-        .mobile-continue-btn:hover {
-            opacity: 0.8;
-        }
-
-        .mobile-hidden {
-            display: none !important;
-        }
-
         @keyframes slideIn {
             from { 
                 transform: translate(100%, 100%); 
@@ -275,22 +238,15 @@
     </style>
 </head>
 <body>
-    <div class="modal-overlay mobile-warning" id="mobile-warning">
-        <div class="modal-content mobile-warning-content">
-            <p class="mobile-text">Для лучшего эффекта от сайта используйте ПК</p>
-            <button class="mobile-continue-btn" id="continue-btn">ПРОДОЛЖИТЬ ТАК</button>
-        </div>
-    </div>
-
     <canvas id="matrix-canvas"></canvas>
     
-    <h1 class="main-title mobile-hidden">M5 Недо-хакер</h1>
+    <h1 class="main-title">M5 Недо-хакер</h1>
 
-    <div class="boot-container mobile-hidden">
+    <div class="boot-container">
         <div id="boot-sequence"></div>
     </div>
 
-    <div class="buttons-container mobile-hidden">
+    <div class="buttons-container">
         <button class="action-btn projects-btn">Проекты</button>
         <button class="action-btn contacts-btn">Контакты</button>
         <button class="action-btn news-btn">Новости</button>
@@ -301,7 +257,7 @@
         <button class="action-btn weapons-btn">Купить оружие</button>
     </div>
 
-    <!-- Модальные окна -->
+    <!-- Модальное окно "Блог" -->
     <div class="modal-overlay blog-modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -315,6 +271,7 @@
         </div>
     </div>
 
+    <!-- Остальные модальные окна -->
     <div class="modal-overlay weapons-modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -388,42 +345,6 @@
     </div>
 
     <script>
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        function showMobileWarning() {
-            const warning = document.getElementById('mobile-warning');
-            const content = warning.querySelector('.modal-content');
-            warning.style.display = 'flex';
-            content.classList.add('modal-show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function hideMobileWarning() {
-            const warning = document.getElementById('mobile-warning');
-            const content = warning.querySelector('.modal-content');
-            content.classList.add('modal-hide');
-            setTimeout(() => {
-                warning.style.display = 'none';
-                document.body.style.overflow = '';
-                document.querySelectorAll('.mobile-hidden').forEach(el => {
-                    el.style.display = '';
-                });
-            }, 500);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            if(isMobileDevice()) {
-                showMobileWarning();
-                document.getElementById('continue-btn').addEventListener('click', hideMobileWarning);
-            } else {
-                document.querySelectorAll('.mobile-hidden').forEach(el => {
-                    el.style.display = '';
-                });
-            }
-        });
-
         document.addEventListener('wheel', function(e) {
             if (e.ctrlKey) return;
             if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
@@ -435,6 +356,7 @@
             const touch = e.touches[0];
             const startY = touch.pageY;
             const startX = touch.pageX;
+            
             if (Math.abs(touch.pageY - startY) > Math.abs(touch.pageX - startX)) {
                 e.preventDefault();
             }
@@ -456,12 +378,14 @@
         function drawMatrix() {
             ctx.fillStyle = 'rgba(0, 17, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
             ctx.fillStyle = '#00ff80';
             ctx.font = '20px "MS Gothic", monospace';
 
             drops.forEach((drop, i) => {
                 const char = chars[Math.floor(Math.random() * chars.length)];
                 ctx.fillText(char, i * 20, drop * 20);
+                
                 if(drop * 20 > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
@@ -489,7 +413,9 @@
                     <div class="boot-text">${step}</div>
                 `;
                 container.appendChild(line);
+                
                 await new Promise(resolve => setTimeout(resolve, 2000));
+                
                 line.innerHTML = `
                     <div class="boot-text">
                         ${step} <span class="completed">✔ Готово</span>
@@ -501,6 +427,7 @@
                 bootContainer.style.maxWidth = '90vw';
                 bootContainer.style.height = '70vh';
                 container.style.display = 'none';
+                
                 const content = `
                     <div style="padding: 2rem; text-align: center;">
                         <h2>Обо мне</h2>
@@ -514,6 +441,7 @@
                 `;
                 bootContainer.insertAdjacentHTML('beforeend', content);
                 actionBtns.forEach(btn => btn.classList.add('visible'));
+                
                 initOscilloscope();
             }, 1000);
         }
@@ -533,21 +461,25 @@
                 ctx.beginPath();
                 ctx.strokeStyle = '#00ff80';
                 ctx.lineWidth = 2;
+                
                 for(let x = 0; x < canvas.width; x++) {
                     const y = canvas.height/2 + 
                              Math.sin(x * 0.05 + phase) * 30 * Math.sin(phase*0.5) +
                              Math.sin(x * 0.03 + phase*1.5) * 20;
                     ctx.lineTo(x, y);
                 }
+                
                 ctx.stroke();
                 phase += 0.1;
                 requestAnimationFrame(draw);
             }
+            
             resize();
             window.addEventListener('resize', resize);
             draw();
         }
 
+        // Обработчики кнопок
         document.querySelector('.weapons-btn').addEventListener('click', () => showModal('weapons'));
         document.querySelector('.projects-btn').addEventListener('click', () => showModal('projects'));
         document.querySelector('.contacts-btn').addEventListener('click', () => showModal('contacts'));
@@ -571,6 +503,7 @@
             const content = modal.querySelector('.modal-content');
             content.classList.remove('modal-show');
             content.classList.add('modal-hide');
+            
             setTimeout(() => {
                 modal.style.display = 'none';
                 content.classList.remove('modal-hide');
