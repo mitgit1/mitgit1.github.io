@@ -250,6 +250,16 @@
     </style>
 </head>
 <body>
+    <button class="action-btn info-btn">Сведения</button>
+    <div class="modal-overlay info-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <p style="color: #00ff80; background: linear-gradient(45deg, #3a9a3a, #7cfc00);
+                      -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Этот сайт - просто сайт где людям будет прикольно :)
+            </p>
+        </div>
+    </div>
     <canvas id="matrix-canvas"></canvas>
     <div class="build-version">build 0001</div>
     <h1 class="main-title">M5 Недо-хакер</h1>
@@ -357,6 +367,17 @@
     </div>
 
     <script>
+        document.querySelector('.weapons-btn').addEventListener('click', () => showModal('weapons'));
+        document.querySelector('.projects-btn').addEventListener('click', () => showModal('projects'));
+        document.querySelector('.contacts-btn').addEventListener('click', () => showModal('contacts'));
+        document.querySelector('.news-btn').addEventListener('click', () => showModal('news'));
+        document.querySelector('.videos-btn').addEventListener('click', () => showModal('videos'));
+        document.querySelector('.about-btn').addEventListener('click', () => showModal('about'));
+        document.querySelector('.blog-btn').addEventListener('click', () => showModal('blog'));
+        document.querySelector('.support-btn').addEventListener('click', () => {
+        window.open('https://www.donationalerts.com/r/mitgit', '_blank');
+        });
+        document.querySelector('.info-btn').addEventListener('click', () => showModal('info'));
         document.addEventListener('wheel', function(e) {
             if (e.ctrlKey) return;
             if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
