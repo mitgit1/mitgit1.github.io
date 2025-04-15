@@ -60,6 +60,18 @@
             opacity: 0;
             animation: lineAppear 0.5s forwards;
         }
+        .build-version {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: #00ff80;
+            opacity: 0.7;
+            text-shadow: 0 0 5px #00ff80;
+            z-index: 100;
+            font-family: 'Courier New', monospace;
+            pointer-events: none;
+}
 
         .spinner {
             width: 20px;
@@ -239,7 +251,7 @@
 </head>
 <body>
     <canvas id="matrix-canvas"></canvas>
-    
+    <div class="build-version">build 0001</div>
     <h1 class="main-title">M5 Недо-хакер</h1>
 
     <div class="boot-container">
