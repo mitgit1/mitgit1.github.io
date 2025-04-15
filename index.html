@@ -301,6 +301,7 @@
         <button class="action-btn weapons-btn">Купить оружие</button>
     </div>
 
+    <!-- Модальные окна -->
     <div class="modal-overlay blog-modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -405,33 +406,10 @@
             content.classList.add('modal-hide');
             setTimeout(() => {
                 warning.style.display = 'none';
-                document.body.style.overflow = 'auto';
-                
+                document.body.style.overflow = '';
                 document.querySelectorAll('.mobile-hidden').forEach(el => {
                     el.style.display = '';
                 });
-
-                resizeCanvas();
-                startBootSequence();
-                
-                if (window.matrixInterval) clearInterval(window.matrixInterval);
-                window.matrixInterval = setInterval(drawMatrix, 50);
-                
-                if (!document.getElementById('oscilloscope')) {
-                    const bootContainer = document.querySelector('.boot-container');
-                    bootContainer.insertAdjacentHTML('beforeend', `
-                        <div style="padding: 2rem; text-align: center;">
-                            <h2>Обо мне</h2>
-                            <p style="margin-top: 1rem;">
-                                Привет! Я не хакер.<br>
-                                Просто люблю технологии, игры<br>
-                                и эксперименты с электроникой
-                            </p>
-                            <canvas id="oscilloscope"></canvas>
-                        </div>
-                    `);
-                    initOscilloscope();
-                }
             }, 500);
         }
 
@@ -542,8 +520,6 @@
 
         function initOscilloscope() {
             const canvas = document.getElementById('oscilloscope');
-            if(!canvas) return;
-            
             const ctx = canvas.getContext('2d');
             let phase = 0;
             
