@@ -43,22 +43,26 @@
         }
 
         .matrix-button {
-            width: 200px;
-            height: 200px;
-            background: #08f7fe;
+            width: 80%;
+            max-width: 400px;
+            height: 60px;
+            background: #00FF00;
             border: none;
             cursor: pointer;
             margin: 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
             color: white;
             font-weight: 900;
-            font-size: 1.5em;
+            font-size: 1.3em;
             text-transform: uppercase;
+            border-radius: 2px;
+            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
         }
 
         .matrix-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px #00c234;
+            transform: scale(1.02);
+            box-shadow: 0 0 35px #00FF00;
+            background: #00DD00;
         }
 
         @media (max-width: 768px) {
@@ -66,9 +70,9 @@
                 font-size: 1.5em;
             }
             .matrix-button {
-                width: 150px;
-                height: 150px;
-                font-size: 1.2em;
+                width: 90%;
+                height: 50px;
+                font-size: 1.1em;
             }
         }
     </style>
@@ -82,7 +86,16 @@
     </div>
 
     <script>
-        // Matrix rain animation
+        // Проверка на мобильное устройство и перенаправление
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        if(!isMobile()) {
+            window.location.href = 'https://mitgit1.github.io/main';
+        }
+
+        // Анимация Matrix
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
 
