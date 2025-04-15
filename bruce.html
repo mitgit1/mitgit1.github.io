@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bruce 1.9.1</title>
+    <style>
+        body {
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: monospace;
+            color: #0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .screen {
+            width: 300px;
+            height: 300px;
+            background: black;
+            border: 2px solid #0f0;
+            margin: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen-content {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+
+        .active {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        button {
+            background: #333;
+            border: 2px solid #0f0;
+            color: #0f0;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:active {
+            background: #0f0;
+            color: black;
+        }
+
+        #shark {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen">
+        <div id="boot" class="screen-content">
+            <h1>Bruce</h1>
+            <p>1.9.1</p>
+        </div>
+        <div id="shark-screen" class="screen-content">
+            <img id="shark" src="https://emojicdn.elk.sh/🦈" alt="Shark">
+        </div>
+        <div id="menu" class="screen-content">
+            <div id="clock"></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="btnA">A</button>
+        <button id="btnCenter">Center</button>
+        <button id="btnB">B</button>
+    </div>
+
+    <script>
+        const states = {
+            OFF: 0,
+            BOOT: 1,
+            SHARK: 2,
+            MENU: 3
+        };
+
+        let currentState = states.OFF;
+        let holdTimer;
+        let isFirstBoot = true;
+
+        // Элементы интерфейса
+        const bootScreen = document.getElementById('boot');
+        const sharkScreen = document.getElementById('shark-screen');
+        const menuScreen = document.getElementById('menu');
+        const clockElement = document.getElementById('clock');
+
+        // Кнопки
+        const btnCenter = document.getElementById('btnCenter');
+
+        // Обработчики кнопки Center
+        btnCenter.addEventListener('mousedown', startHold);
+        btnCenter.addEventListener('mouseup', endHold);
+        btnCenter.addEventListener('mouseleave', endHold);
+
+        function startHold() {
+            if (currentState === states.OFF) {
+                holdTimer = setTimeout(() => {
+                    powerOn();
+                }, 3000);
+            }
+        }
+
+        function endHold() {
+            clearTimeout(holdTimer);
+        }
+
+        function powerOn() {
+            currentState = states.BOOT;
+            bootScreen.classList.add('active');
+            
+            setTimeout(() => {
+                bootScreen.classList.remove('active');
+                showShark();
+            }, 2000);
+        }
+
+        function showShark() {
+            currentState = states.SHARK;
+            sharkScreen.classList.add('active');
+            
+            setTimeout(() => {
+                sharkScreen.classList.remove('active');
+                showMenu();
+            }, 2000);
+        }
+
+        function showMenu() {
+            currentState = states.MENU;
+            menuScreen.classList.add('active');
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        function updateClock() {
+            const options = {
+                timeZone: 'Europe/Samara', // Ижевск находится в этом часовом поясе
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const formatter = new Intl.DateTimeFormat('ru-RU', options);
+            clockElement.textContent = formatter.format(new Date());
+        }
+
+        // Обработчики кнопки A
+        document.getElementById('btnA').addEventListener('click', () => {
+            if (currentState === states.MENU) {
+                // Здесь можно добавить функционал пролистывания
+            }
+        });
+    </script>
+</body>
+</html>
