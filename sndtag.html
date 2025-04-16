@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullscreen Image with Sound</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #fullscreen-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <img id="fullscreen-image" src="https://i.ibb.co/rfTZxDRY/1.jpg" alt="Fullscreen Image">
+    
+    <audio id="sound" src="https://files.catbox.moe/aldt8v.mp3" preload="auto"></audio>
+
+    <script>
+        document.getElementById('fullscreen-image').addEventListener('click', function() {
+            var audio = document.getElementById('sound');
+            audio.currentTime = 0; // Перемотка звука в начало
+            audio.play().catch(e => alert("Не удалось воспроизвести звук. Попробуйте нажать ещё раз или проверьте разрешения браузера."));
+        });
+
+        // Добавляем обработчик для мобильных устройств (некоторые требуют взаимодействия до воспроизведения)
+        document.addEventListener('touchstart', function() {
+            // Пустая функция, просто чтобы "разблокировать" аудио
+        }, { once: true });
+    </script>
+</body>
+</html>
