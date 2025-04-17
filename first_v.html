@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M5 Недо-хакер</title>
+    <style>
+        /* Основные стили */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', monospace;
+            background-color: #001100;
+            color: #00ff00;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Эффект матрицы */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Заголовок */
+        .main-title {
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            background: linear-gradient(
+                45deg,
+                #001000,
+                #00ff80
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px #00ff0033;
+        }
+
+        /* Контентная область */
+        .bio-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(0, 30, 0, 0.5);
+            border: 1px solid #00ff8033;
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+        }
+
+        /* Стили текста */
+        .hacker-text {
+            color: #00ff80;
+            line-height: 1.6;
+            text-shadow: 0 0 10px #00ff0022;
+        }
+
+        /* Анимация мигания курсора */
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas для эффекта матрицы -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Заголовок -->
+    <h1 class="main-title">M5 Недо-хакер</h1>
+
+    <!-- Контент -->
+    <div class="bio-container">
+        <h2 class="hacker-text">My BIO<span class="cursor">_</span></h2>
+        <p class="hacker-text">
+            [root@matrix ~]# whoami<br>
+            > Инициализация протокола M5...<br>
+            > Статус: НЕДОХАКЕР<br>
+            > Специализация: Псевдокод, CSS-хакерство<br>
+            > Уровень доступа: 0xDEADBEEF<br>
+        </p>
+    </div>
+
+    <!-- Скрипт матрицы -->
+    <script>
+        // Эффект падающих символов
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ$%^&*';
+        const drops = Array(Math.floor(canvas.width/20)).fill(0);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 17, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff80';
+            ctx.font = '20px monospace';
+
+            drops.forEach((drop, i) => {
+                const char = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(char, i*20, drop*20);
+                
+                if(drop*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+
+        setInterval(drawMatrix, 50);
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
+</html>
