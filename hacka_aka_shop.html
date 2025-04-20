@@ -306,6 +306,28 @@
         let currentQty = 1;
         const basePrice = 2500;
 
+        // Функции временного ограничения
+        function getTimeLimitKey(username) {
+            return `lastOrder_${username.toLowerCase()}`;
+        }
+
+        function canMakeOrder(username) {
+            if(username.toLowerCase() === '@testuser') return true;
+            const lastOrder = localStorage.getItem(getTimeLimitKey(username));
+            return !lastOrder || (Date.now() - parseInt(lastOrder)) > 7200000;
+        }
+
+        function updateOrderTimestamp(username) {
+            localStorage.setItem(getTimeLimitKey(username), Date.now());
+        }
+
+        function showTimeLimitError(username) {
+            const lastOrderTime = parseInt(localStorage.getItem(getTimeLimitKey(username)));
+            const remaining = Math.ceil((7200 - (Date.now() - lastOrderTime)/1000)/60);
+            alert(`Вы можете сделать следующий заказ через ${remaining} минут!`);
+        }
+
+        // Основные функции
         function updatePrice() {
             document.getElementById('price').textContent = 
                 `${(basePrice * currentQty).toLocaleString('ru-RU')}₽`;
@@ -364,25 +386,37 @@
         async function sendOrderToTelegram() {
             const username = document.getElementById('telegramUsername').value;
             if(!username) return alert('Введите юзернейм!');
-            
-            const message = `Новый заказ!\n\nЮзернейм: @${username}\nТовар: M5 StickC Plus 2\nКоличество: ${currentQty}\nСумма: ${basePrice * currentQty}₽`;
-            
+
+            if(!canMakeOrder(username)) {
+                return showTimeLimitError(username);
+            }
+
+            const message = `Новый заказ!\n\n` +
+                            `Юзернейм: @${username}\n` +
+                            `Предмет: M5 StickC Plus 2\n` +
+                            `Количество: ${currentQty}\n` +
+                            `Сумма: ${basePrice * currentQty}₽`;
+
             try {
                 const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({chat_id: CHAT_ID, text: message})
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message
+                    })
                 });
-                
+
                 if(response.ok) {
+                    updateOrderTimestamp(username);
                     showNotification();
                     closeModal();
                 } else {
-                    alert('Ошибка отправки!');
+                    alert('Ошибка отправки заказа!');
                 }
             } catch(error) {
                 console.error('Ошибка:', error);
-                alert('Заказ принят!');
+                alert('Произошла ошибка при отправке!');
             }
         }
 
