@@ -25,6 +25,7 @@
             padding: 0 20px;
             border: 1px solid rgba(0,0,0,0.08);
             transition: all 0.3s ease;
+            z-index: 100;
         }
 
         .image-frame {
@@ -71,9 +72,16 @@
 
         .quantity-controls {
             display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: auto;
+            align-items: center;
+        }
+
+        .qty-wrapper {
+            display: flex;
             align-items: center;
             gap: 12px;
-            margin-left: auto;
         }
 
         .qty-btn {
@@ -94,6 +102,84 @@
             min-width: 30px;
             text-align: center;
             font-weight: 600;
+        }
+
+        .cart-btn {
+            padding: 8px 20px;
+            background: linear-gradient(45deg, #27ae60, #219a52);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            width: 120px;
+            opacity: 0;
+            transform: translateY(10px);
+            box-shadow: 0 3px 12px rgba(39,174,96,0.3);
+        }
+
+        .cart-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Модальное окно */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            transform: translateY(100vh);
+            animation: modalSlide 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            max-width: 350px;
+            width: 90%;
+            text-align: center;
+        }
+
+        @keyframes modalSlide {
+            to { transform: translateY(0); }
+        }
+
+        .modal-close {
+            animation: modalDown 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+        }
+
+        @keyframes modalDown {
+            to { transform: translateY(100vh); }
+        }
+
+        .modal-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin: 15px auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .modal-title {
+            font-size: 26px;
+            margin: 10px 0;
+            color: #2c3e50;
+        }
+
+        .modal-info {
+            font-size: 18px;
+            margin: 12px 0;
+            color: #34495e;
         }
 
         @media (max-width: 480px) {
@@ -120,6 +206,15 @@
                 margin-right: auto;
                 order: 2;
             }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .modal-image {
+                width: 120px;
+                height: 120px;
+            }
         }
     </style>
 </head>
@@ -138,15 +233,34 @@
         <button class="order-btn" onclick="showControls()">Купить</button>
         
         <div class="quantity-controls" id="controls">
-            <button class="qty-btn" onclick="changeQty(-1)">-</button>
-            <span id="quantity">1</span>
-            <button class="qty-btn" onclick="changeQty(1)">+</button>
+            <div class="qty-wrapper">
+                <button class="qty-btn" onclick="changeQty(-1)">-</button>
+                <span id="quantity">1</span>
+                <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+            <button class="cart-btn" id="cartBtn">В корзину</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-content" id="modalContent">
+            <h2 class="modal-title">Ваш заказ</h2>
+            <img src="https://i.ibb.co/Ngg5hT1c/images-11.jpg" 
+                 class="modal-image"
+                 alt="M5 Stick"
+                 onerror="this.src='https://via.placeholder.com/180'">
+            <h3 class="modal-info">M5 STICKC PLUS 2</h3>
+            <p class="modal-info" id="modalTotal">Итого: 2500₽</p>
+            <p class="modal-info" id="modalQty">Кол-во: 1</p>
         </div>
     </div>
 
     <script>
         let currentQty = 1;
         const basePrice = 2500;
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalContent = document.getElementById('modalContent');
 
         function updatePrice() {
             const totalPrice = basePrice * currentQty;
@@ -155,24 +269,63 @@
         }
 
         function showControls() {
-            document.querySelector('.order-btn').style.display = 'none';
-            document.getElementById('controls').style.display = 'flex';
+            const orderBtn = document.querySelector('.order-btn');
+            const controls = document.getElementById('controls');
+            const cartBtn = document.getElementById('cartBtn');
+            
+            orderBtn.style.display = 'none';
+            controls.style.display = 'flex';
+            
+            setTimeout(() => {
+                cartBtn.classList.add('show');
+            }, 100);
+            
             updatePrice();
         }
 
         function changeQty(change) {
             currentQty = Math.max(0, currentQty + change);
+            const orderBtn = document.querySelector('.order-btn');
+            const controls = document.getElementById('controls');
+            const cartBtn = document.getElementById('cartBtn');
             
             if(currentQty === 0) {
-                document.querySelector('.order-btn').style.display = 'block';
-                document.getElementById('controls').style.display = 'none';
+                cartBtn.classList.remove('show');
+                setTimeout(() => {
+                    controls.style.display = 'none';
+                    orderBtn.style.display = 'block';
+                }, 300);
             }
             
             document.getElementById('quantity').textContent = currentQty;
             updatePrice();
+            updateModalContent();
         }
 
-        // Инициализация при загрузке
+        function updateModalContent() {
+            document.getElementById('modalTotal').textContent = 
+                `Итого: ${(basePrice * currentQty).toLocaleString('ru-RU')}₽`;
+            document.getElementById('modalQty').textContent = 
+                `Кол-во: ${currentQty}`;
+        }
+
+        document.getElementById('cartBtn').onclick = function(event) {
+            event.stopPropagation();
+            modalOverlay.style.display = 'flex';
+            updateModalContent();
+        };
+
+        function closeModal(event) {
+            if(event.target === modalOverlay) {
+                modalContent.classList.add('modal-close');
+                setTimeout(() => {
+                    modalOverlay.style.display = 'none';
+                    modalContent.classList.remove('modal-close');
+                }, 400);
+            }
+        }
+
+        // Инициализация
         updatePrice();
     </script>
 </body>
