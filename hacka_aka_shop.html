@@ -2,75 +2,170 @@
 <html>
 <head>
     <style>
-        .container {
+        body {
+            background: linear-gradient(135deg, #e8e8e8 0%, #d3d3d3 50%, #f0f0f0 100%);
+            min-height: 100vh;
+            margin: 0;
             display: flex;
             align-items: center;
-            padding: 20px;
-            border: 2px solid #ccc;
-            max-width: 600px;
-            margin: 20px;
+            justify-content: center;
+            font-family: 'Segoe UI', system-ui;
+        }
+
+        .container {
+            display: flex;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            max-width: 680px;
             position: relative;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.12),
+                inset 0 0 30px rgba(255,255,255,0.4);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .container:hover {
+            transform: perspective(1000px) rotateX(0.5deg) rotateY(-0.5deg) translateZ(25px);
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.15),
+                inset 0 0 40px rgba(255,255,255,0.5);
         }
 
         .image-frame {
-            border-radius: 15px;
+            border-radius: 25px;
             overflow: hidden;
-            width: 200px;
-            height: 200px;
-            margin-right: 20px;
+            width: 280px;
+            height: 280px;
+            margin-right: 35px;
+            border: 2px solid rgba(255,255,255,0.8);
+            box-shadow: 
+                0 12px 24px -8px rgba(0,0,0,0.2),
+                inset 0 0 20px rgba(0,0,0,0.05);
+            transition: 
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        .image-frame:hover {
+            transform: scale(1.03) rotateZ(-0.5deg);
+            box-shadow: 
+                0 15px 30px -5px rgba(0,0,0,0.25),
+                inset 0 0 25px rgba(0,0,0,0.1);
         }
 
         .title {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            font-weight: bold;
+            top: 35px;
+            right: 35px;
+            font-size: 32px;
+            font-weight: 800;
+            color: #2a2a2a;
+            text-shadow: 
+                2px 2px 4px rgba(255,255,255,0.5),
+                -1px -1px 1px rgba(0,0,0,0.1);
+            letter-spacing: -1px;
         }
 
         .price {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            font-size: 18px;
+            bottom: 35px;
+            right: 35px;
+            font-size: 22px;
+            color: #27ae60;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
 
         .order-btn {
-            padding: 10px 20px;
-            background: #4CAF50;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #2c3e50 0%, #34495e 100%);
             color: white;
             border: none;
+            border-radius: 30px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 
+                0 5px 15px rgba(44,62,80,0.3),
+                inset 0 2px 4px rgba(255,255,255,0.2);
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 20px rgba(44,62,80,0.4),
+                inset 0 3px 6px rgba(255,255,255,0.3);
         }
 
         .quantity-controls {
             display: none;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
+            animation: slideIn 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes slideIn {
+            0% { 
+                opacity: 0;
+                transform: translateY(20px) rotateX(-90deg);
+            }
+            100% { 
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
         }
 
         .qty-btn {
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             border: none;
-            background: #4CAF50;
+            background: linear-gradient(45deg, #3498db 0%, #2980b9 100%);
             color: white;
             cursor: pointer;
             border-radius: 50%;
+            font-size: 20px;
+            transition: all 0.2s ease;
+            box-shadow: 
+                0 4px 12px rgba(52,152,219,0.3),
+                inset 0 1px 3px rgba(255,255,255,0.3);
+        }
+
+        .qty-btn:hover {
+            transform: scale(1.15) rotateZ(5deg);
+            box-shadow: 
+                0 6px 18px rgba(52,152,219,0.4),
+                inset 0 2px 5px rgba(255,255,255,0.4);
+        }
+
+        #quantity {
+            font-size: 26px;
+            min-width: 40px;
+            text-align: center;
+            color: #2c3e50;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="https://ibb.co/JWWVL3xD" class="image-frame" alt="M5 Stick">
+        <img src="https://i.ibb.co/Ngg5hT1c/images-11.jpg" 
+             class="image-frame" 
+             alt="M5 Stick"
+             onerror="this.src='https://via.placeholder.com/280'">
+        
         <div class="title">M5 STICKC PLUS 2</div>
         <div class="price">Price : 2500₽</div>
         
-        <button class="order-btn" onclick="showControls()">Заказать</button>
+        <button class="order-btn" onclick="showControls()">🚀 Заказать</button>
         
         <div class="quantity-controls" id="controls">
-            <button class="qty-btn" onclick="changeQty(-1)">-</button>
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
             <span id="quantity">1</span>
             <button class="qty-btn" onclick="changeQty(1)">+</button>
         </div>
@@ -78,22 +173,56 @@
 
     <script>
         let currentQty = 1;
+        const orderBtn = document.querySelector('.order-btn');
+        const controls = document.getElementById('controls');
+        let isAnimating = false;
 
         function showControls() {
-            document.querySelector('.order-btn').style.display = 'none';
-            document.getElementById('controls').style.display = 'flex';
+            if(isAnimating) return;
+            isAnimating = true;
+            
+            orderBtn.style.transform = 'scale(0.9)';
+            orderBtn.style.opacity = '0';
+            
+            setTimeout(() => {
+                orderBtn.style.display = 'none';
+                controls.style.display = 'flex';
+                controls.style.opacity = '1';
+                isAnimating = false;
+            }, 400);
         }
 
         function changeQty(change) {
+            if(isAnimating) return;
+            isAnimating = true;
+            
             currentQty = Math.max(0, currentQty + change);
             
             if(currentQty === 0) {
-                document.querySelector('.order-btn').style.display = 'block';
-                document.getElementById('controls').style.display = 'none';
+                controls.style.transform = 'scale(0.95)';
+                controls.style.opacity = '0';
+                
+                setTimeout(() => {
+                    controls.style.display = 'none';
+                    orderBtn.style.display = 'block';
+                    orderBtn.style.transform = 'scale(1)';
+                    orderBtn.style.opacity = '1';
+                    isAnimating = false;
+                }, 350);
                 return;
             }
             
+            document.getElementById('quantity').animate([
+                { transform: 'scale(1)', opacity: 1 },
+                { transform: 'scale(1.5)', opacity: 0.5 },
+                { transform: 'scale(1)', opacity: 1 }
+            ], {
+                duration: 300,
+                easing: 'ease-out'
+            });
+            
             document.getElementById('quantity').textContent = currentQty;
+            setTimeout(() => isAnimating = false, 300);
         }
     </script>
 </body>
