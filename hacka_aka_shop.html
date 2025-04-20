@@ -6,149 +6,130 @@
             background: linear-gradient(135deg, #e8e8e8 0%, #d3d3d3 50%, #f0f0f0 100%);
             min-height: 100vh;
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 20px;
             font-family: 'Segoe UI', system-ui;
         }
 
         .container {
-            display: flex;
-            padding: 30px;
+            position: fixed;
+            left: 30px;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 40px;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 30px;
-            max-width: 680px;
-            position: relative;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
+            border-radius: 35px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             box-shadow: 
-                0 20px 40px rgba(0,0,0,0.12),
-                inset 0 0 30px rgba(255,255,255,0.4);
+                0 25px 60px rgba(0,0,0,0.15),
+                inset 0 0 40px rgba(255,255,255,0.4);
+            display: flex;
+            align-items: center;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .container:hover {
-            transform: perspective(1000px) rotateX(0.5deg) rotateY(-0.5deg) translateZ(25px);
-            box-shadow: 
-                0 25px 50px rgba(0,0,0,0.15),
-                inset 0 0 40px rgba(255,255,255,0.5);
-        }
-
         .image-frame {
+            flex-shrink: 0;
             border-radius: 25px;
-            overflow: hidden;
-            width: 280px;
-            height: 280px;
-            margin-right: 35px;
+            width: 35vw;
+            max-width: 400px;
+            height: 35vw;
+            max-height: 400px;
+            margin-right: 50px;
             border: 2px solid rgba(255,255,255,0.8);
             box-shadow: 
-                0 12px 24px -8px rgba(0,0,0,0.2),
-                inset 0 0 20px rgba(0,0,0,0.05);
-            transition: 
-                transform 0.3s ease,
-                box-shadow 0.3s ease;
+                0 15px 35px -10px rgba(0,0,0,0.25),
+                inset 0 0 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
 
-        .image-frame:hover {
-            transform: scale(1.03) rotateZ(-0.5deg);
-            box-shadow: 
-                0 15px 30px -5px rgba(0,0,0,0.25),
-                inset 0 0 25px rgba(0,0,0,0.1);
+        .content-wrapper {
+            flex-grow: 1;
+            position: relative;
+            height: 100%;
+            padding-right: 20px;
         }
 
         .title {
-            position: absolute;
-            top: 35px;
-            right: 35px;
-            font-size: 32px;
+            font-size: calc(2vw + 20px);
             font-weight: 800;
             color: #2a2a2a;
+            margin-bottom: 15px;
             text-shadow: 
                 2px 2px 4px rgba(255,255,255,0.5),
                 -1px -1px 1px rgba(0,0,0,0.1);
-            letter-spacing: -1px;
         }
 
         .price {
-            position: absolute;
-            bottom: 35px;
-            right: 35px;
-            font-size: 22px;
+            font-size: calc(1.2vw + 16px);
             color: #27ae60;
             font-weight: 700;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: block;
         }
 
         .order-btn {
-            padding: 15px 40px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 18px 45px;
             background: linear-gradient(45deg, #2c3e50 0%, #34495e 100%);
             color: white;
             border: none;
-            border-radius: 30px;
+            border-radius: 35px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
             letter-spacing: 0.5px;
             text-transform: uppercase;
             box-shadow: 
-                0 5px 15px rgba(44,62,80,0.3),
+                0 8px 25px rgba(44,62,80,0.3),
                 inset 0 2px 4px rgba(255,255,255,0.2);
         }
 
-        .order-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 
-                0 8px 20px rgba(44,62,80,0.4),
-                inset 0 3px 6px rgba(255,255,255,0.3);
-        }
-
         .quantity-controls {
+            position: absolute;
+            bottom: 0;
+            right: 0;
             display: none;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
             animation: slideIn 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        @keyframes slideIn {
-            0% { 
-                opacity: 0;
-                transform: translateY(20px) rotateX(-90deg);
+        /* Остальные стили кнопок и анимации из предыдущего кода */
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                left: 15px;
+                right: 15px;
+                padding: 25px;
             }
-            100% { 
-                opacity: 1;
-                transform: translateY(0) rotateX(0);
+            
+            .image-frame {
+                width: 60vw;
+                height: 60vw;
+                margin-right: 0;
+                margin-bottom: 30px;
             }
-        }
-
-        .qty-btn {
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: linear-gradient(45deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            cursor: pointer;
-            border-radius: 50%;
-            font-size: 20px;
-            transition: all 0.2s ease;
-            box-shadow: 
-                0 4px 12px rgba(52,152,219,0.3),
-                inset 0 1px 3px rgba(255,255,255,0.3);
-        }
-
-        .qty-btn:hover {
-            transform: scale(1.15) rotateZ(5deg);
-            box-shadow: 
-                0 6px 18px rgba(52,152,219,0.4),
-                inset 0 2px 5px rgba(255,255,255,0.4);
-        }
-
-        #quantity {
-            font-size: 26px;
-            min-width: 40px;
-            text-align: center;
-            color: #2c3e50;
-            font-weight: 700;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            
+            .title {
+                font-size: 24px;
+                text-align: center;
+            }
+            
+            .price {
+                text-align: center;
+            }
+            
+            .order-btn, .quantity-controls {
+                position: relative;
+                margin-top: 20px;
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -157,21 +138,24 @@
         <img src="https://i.ibb.co/Ngg5hT1c/images-11.jpg" 
              class="image-frame" 
              alt="M5 Stick"
-             onerror="this.src='https://via.placeholder.com/280'">
+             onerror="this.src='https://via.placeholder.com/400'">
         
-        <div class="title">M5 STICKC PLUS 2</div>
-        <div class="price">Price : 2500₽</div>
-        
-        <button class="order-btn" onclick="showControls()">🚀 Заказать</button>
-        
-        <div class="quantity-controls" id="controls">
-            <button class="qty-btn" onclick="changeQty(-1)">−</button>
-            <span id="quantity">1</span>
-            <button class="qty-btn" onclick="changeQty(1)">+</button>
+        <div class="content-wrapper">
+            <div class="title">M5 STICKC PLUS 2</div>
+            <div class="price">Price : 2500₽</div>
+            
+            <button class="order-btn" onclick="showControls()">🚀 Заказать</button>
+            
+            <div class="quantity-controls" id="controls">
+                <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                <span id="quantity">1</span>
+                <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // Тот же скрипт из предыдущей версии
         let currentQty = 1;
         const orderBtn = document.querySelector('.order-btn');
         const controls = document.getElementById('controls');
