@@ -3,7 +3,7 @@
 <head>
     <style>
         body {
-            padding-top: 100px; /* Отступ для основного контента */
+            padding-top: 120px;
             background: linear-gradient(135deg, #e8e8e8 0%, #d3d3d3 50%, #f0f0f0 100%);
             min-height: 100vh;
             margin: 0;
@@ -15,77 +15,111 @@
             top: 20px;
             left: 20px;
             right: 20px;
-            height: 75px;
+            height: 100px;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
             display: flex;
             align-items: center;
-            padding: 0 15px;
-            border: 1px solid rgba(255,255,255,0.6);
+            padding: 0 20px;
+            border: 1px solid rgba(0,0,0,0.08);
             transition: all 0.3s ease;
         }
 
         .image-frame {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            margin-right: 15px;
+            width: 70px;
+            height: 70px;
+            border-radius: 14px;
+            margin-right: 20px;
             border: 2px solid rgba(0,0,0,0.1);
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.08);
             flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        .text-block {
+            margin-right: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             color: #2c3e50;
-            margin-right: auto;
         }
 
         .price {
-            font-size: 14px;
+            font-size: 16px;
             color: #27ae60;
             font-weight: 600;
-            margin: 0 20px;
         }
 
         .order-btn {
-            padding: 8px 20px;
+            padding: 10px 25px;
             background: linear-gradient(45deg, #2c3e50, #34495e);
             color: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 14px;
             transition: all 0.2s ease;
-            box-shadow: 0 3px 12px rgba(44,62,80,0.2);
+            box-shadow: 0 4px 15px rgba(44,62,80,0.2);
         }
 
         .quantity-controls {
             display: none;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             margin-left: auto;
         }
 
         .qty-btn {
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             border: none;
             background: #3498db;
             color: white;
             border-radius: 50%;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
             transition: transform 0.2s ease;
+            line-height: 30px;
         }
 
         #quantity {
-            font-size: 14px;
-            min-width: 20px;
+            font-size: 16px;
+            min-width: 30px;
             text-align: center;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                height: auto;
+                padding: 15px;
+                flex-wrap: wrap;
+            }
+            
+            .image-frame {
+                width: 50px;
+                height: 50px;
+                margin-right: 15px;
+            }
+            
+            .text-block {
+                order: 1;
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .order-btn, .quantity-controls {
+                margin-left: auto;
+                margin-right: auto;
+                order: 2;
+            }
         }
     </style>
 </head>
@@ -94,10 +128,12 @@
         <img src="https://i.ibb.co/Ngg5hT1c/images-11.jpg" 
              class="image-frame" 
              alt="M5 Stick"
-             style="object-fit: cover;">
+             onerror="this.src='https://via.placeholder.com/70'">
 
-        <div class="title">M5 STICKC PLUS 2</div>
-        <div class="price">2500₽</div>
+        <div class="text-block">
+            <div class="title">M5 STICKC PLUS 2</div>
+            <div class="price" id="price">2500₽</div>
+        </div>
         
         <button class="order-btn" onclick="showControls()">Купить</button>
         
@@ -110,10 +146,18 @@
 
     <script>
         let currentQty = 1;
+        const basePrice = 2500;
+
+        function updatePrice() {
+            const totalPrice = basePrice * currentQty;
+            document.getElementById('price').textContent = 
+                `${totalPrice.toLocaleString('ru-RU')}₽`;
+        }
 
         function showControls() {
             document.querySelector('.order-btn').style.display = 'none';
             document.getElementById('controls').style.display = 'flex';
+            updatePrice();
         }
 
         function changeQty(change) {
@@ -122,11 +166,14 @@
             if(currentQty === 0) {
                 document.querySelector('.order-btn').style.display = 'block';
                 document.getElementById('controls').style.display = 'none';
-                return;
             }
             
             document.getElementById('quantity').textContent = currentQty;
+            updatePrice();
         }
+
+        // Инициализация при загрузке
+        updatePrice();
     </script>
 </body>
 </html>
