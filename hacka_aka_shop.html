@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border: 2px solid #ccc;
+            max-width: 600px;
+            margin: 20px;
+            position: relative;
+        }
+
+        .image-frame {
+            border-radius: 15px;
+            overflow: hidden;
+            width: 200px;
+            height: 200px;
+            margin-right: 20px;
+        }
+
+        .title {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .price {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 18px;
+        }
+
+        .order-btn {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .quantity-controls {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://ibb.co/JWWVL3xD" class="image-frame" alt="M5 Stick">
+        <div class="title">M5 STICKC PLUS 2</div>
+        <div class="price">Price : 2500₽</div>
+        
+        <button class="order-btn" onclick="showControls()">Заказать</button>
+        
+        <div class="quantity-controls" id="controls">
+            <button class="qty-btn" onclick="changeQty(-1)">-</button>
+            <span id="quantity">1</span>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQty = 1;
+
+        function showControls() {
+            document.querySelector('.order-btn').style.display = 'none';
+            document.getElementById('controls').style.display = 'flex';
+        }
+
+        function changeQty(change) {
+            currentQty = Math.max(0, currentQty + change);
+            
+            if(currentQty === 0) {
+                document.querySelector('.order-btn').style.display = 'block';
+                document.getElementById('controls').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('quantity').textContent = currentQty;
+        }
+    </script>
+</body>
+</html>
