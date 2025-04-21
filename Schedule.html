@@ -7,84 +7,99 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto;
-            background-color: #0088cc;
-            border-radius: 50%;
+        .chat-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .chat-header {
+            background-color: #0088cc;
             color: white;
-            font-size: 40px;
-            margin-bottom: 15px;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .bot-message {
+            background-color: #e5f6ff;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+            align-self: flex-start;
+        }
+        .user-message {
+            background-color: #0088cc;
+            color: white;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+            align-self: flex-end;
         }
         .button-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 10px;
+            padding: 10px;
+            background-color: white;
+            border-top: 1px solid #e0e0e0;
         }
         .bot-button {
             background-color: #0088cc;
             color: white;
             border: none;
-            padding: 15px;
+            padding: 12px;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s;
             text-align: center;
         }
         .bot-button:hover {
             background-color: #006699;
         }
-        .response-area {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            min-height: 100px;
-            margin-top: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .message {
+            display: flex;
+            flex-direction: column;
         }
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
+        .timestamp {
+            font-size: 11px;
+            color: #666;
+            margin-top: 3px;
+            text-align: right;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">Б</div>
-        <h1>Школьный Бот</h1>
-        <p>Ваш помощник в школьных вопросах</p>
-    </div>
-
-    <div class="button-container">
-        <button class="bot-button" onclick="sendCommand('schedule')">Расписание⏰</button>
-        <button class="bot-button" onclick="sendCommand('bells')">Расписание звонков🔔</button>
-        <button class="bot-button" onclick="sendCommand('fc')">Где ФК?⚽</button>
-        <button class="bot-button" onclick="sendCommand('info')">Инфо🔍</button>
-    </div>
-
-    <div class="loading" id="loading">
-        <p>Загрузка...</p>
-    </div>
-
-    <div class="response-area" id="response">
-        <p>Выберите одну из кнопок выше, чтобы получить информацию.</p>
+    <div class="chat-container">
+        <div class="chat-header">
+            Школьный Бот
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Сообщения будут добавляться здесь -->
+        </div>
+        <div class="button-container">
+            <button class="bot-button" onclick="sendCommand('schedule')">Расписание⏰</button>
+            <button class="bot-button" onclick="sendCommand('bells')">Расписание звонков🔔</button>
+            <button class="bot-button" onclick="sendCommand('fc')">Где ФК?⚽</button>
+            <button class="bot-button" onclick="sendCommand('info')">Инфо🔍</button>
+        </div>
     </div>
 
     <script>
@@ -92,90 +107,139 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        // Токен вашего бота
+        // Токен вашего бота (для демонстрации)
         const BOT_TOKEN = '8063971284:AAE9UsktnRtbMK3SWuJPE8H6bTaHnY1h9HQ';
         
-        // Функция для отправки команд боту
+        // При загрузке страницы показываем приветственное сообщение
+        window.onload = function() {
+            addBotMessage("Привет! Я школьный бот-помощник. Выберите нужный пункт:");
+        }
+        
+        // Функция для добавления сообщения от бота
+        function addBotMessage(text) {
+            const chat = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            const botMessage = document.createElement('div');
+            botMessage.className = 'bot-message';
+            botMessage.innerHTML = text;
+            
+            const timestamp = document.createElement('div');
+            timestamp.className = 'timestamp';
+            timestamp.textContent = formatTime(new Date());
+            
+            messageDiv.appendChild(botMessage);
+            messageDiv.appendChild(timestamp);
+            chat.appendChild(messageDiv);
+            
+            // Прокручиваем чат вниз
+            chat.scrollTop = chat.scrollHeight;
+        }
+        
+        // Функция для добавления сообщения от пользователя
+        function addUserMessage(text) {
+            const chat = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            const userMessage = document.createElement('div');
+            userMessage.className = 'user-message';
+            userMessage.textContent = text;
+            
+            const timestamp = document.createElement('div');
+            timestamp.className = 'timestamp';
+            timestamp.textContent = formatTime(new Date());
+            
+            messageDiv.appendChild(userMessage);
+            messageDiv.appendChild(timestamp);
+            chat.appendChild(messageDiv);
+            
+            // Прокручиваем чат вниз
+            chat.scrollTop = chat.scrollHeight;
+        }
+        
+        // Функция для форматирования времени
+        function formatTime(date) {
+            return date.getHours().toString().padStart(2, '0') + ':' + 
+                   date.getMinutes().toString().padStart(2, '0');
+        }
+        
+        // Функция для отправки команд
         function sendCommand(command) {
-            const responseArea = document.getElementById('response');
-            const loading = document.getElementById('loading');
+            let userMessage = '';
+            let botResponse = '';
             
-            // Показываем индикатор загрузки
-            loading.style.display = 'block';
-            responseArea.innerHTML = '';
+            // Определяем текст сообщения пользователя
+            switch(command) {
+                case 'schedule':
+                    userMessage = 'Расписание⏰';
+                    botResponse = `📅 Расписание на неделю:
+                    
+<b>Понедельник:</b>
+1. Математика
+2. Физика
+3. Литература
+
+<b>Вторник:</b>
+1. История
+2. Химия
+3. Физкультура`;
+                    break;
+                case 'bells':
+                    userMessage = 'Расписание звонков🔔';
+                    botResponse = `🔔 Расписание звонков:
+                    
+1 урок: 8:30 - 9:15
+2 урок: 9:25 - 10:10
+3 урок: 10:20 - 11:05
+Перемена 20 минут
+4 урок: 11:25 - 12:10
+5 урок: 12:20 - 13:05
+6 урок: 13:15 - 14:00`;
+                    break;
+                case 'fc':
+                    userMessage = 'Где ФК?⚽';
+                    botResponse = `⚽ Спортивные объекты:
+                    
+<b>Футбольное поле:</b> корпус Б, этаж 1
+<b>Спортивный зал:</b> корпус А, этаж 3
+<b>Тренажерный зал:</b> корпус В, этаж 2`;
+                    break;
+                case 'info':
+                    userMessage = 'Инфо🔍';
+                    botResponse = `ℹ Информация о боте:
+                    
+<b>Версия:</b> 2.0
+<b>Разработчик:</b> Школьный IT-клуб
+<b>Дата обновления:</b> 01.09.2023
+<b>Для связи:</b> @school_support`;
+                    break;
+            }
             
-            // Эмуляция ответов бота (в реальном приложении здесь будет запрос к API бота)
+            // Добавляем сообщения в чат
+            addUserMessage(userMessage);
+            
+            // В реальном приложении здесь будет запрос к API бота:
+            // fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //         chat_id: tg.initDataUnsafe.user.id,
+            //         text: command
+            //     })
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     addBotMessage(data.result.text);
+            // });
+            
+            // Для демонстрации используем локальные ответы
             setTimeout(() => {
-                loading.style.display = 'none';
-                
-                let responseText = '';
-                switch(command) {
-                    case 'schedule':
-                        responseText = `
-                            <h3>Расписание на неделю:</h3>
-                            <p><strong>Понедельник:</strong> Математика, Физика, Литература</p>
-                            <p><strong>Вторник:</strong> История, Химия, Физкультура</p>
-                            <p><strong>Среда:</strong> Биология, Английский, Информатика</p>
-                            <p><strong>Четверг:</strong> География, Русский, ОБЖ</p>
-                            <p><strong>Пятница:</strong> Обществознание, Музыка, Труд</p>
-                        `;
-                        break;
-                    case 'bells':
-                        responseText = `
-                            <h3>Расписание звонков:</h3>
-                            <p>1 урок: 8:30 - 9:15</p>
-                            <p>2 урок: 9:25 - 10:10</p>
-                            <p>3 урок: 10:20 - 11:05</p>
-                            <p>4 урок: 11:25 - 12:10</p>
-                            <p>5 урок: 12:20 - 13:05</p>
-                            <p>6 урок: 13:15 - 14:00</p>
-                            <p>7 урок: 14:10 - 14:55</p>
-                        `;
-                        break;
-                    case 'fc':
-                        responseText = `
-                            <h3>Футбольное поле сегодня:</h3>
-                            <p>⚽ Основное поле: Занято (уроки физкультуры до 14:00)</p>
-                            <p>⚽ Запасное поле: Свободно с 12:00</p>
-                            <p>🏀 Спортивный зал: Свободен после 15:00</p>
-                        `;
-                        break;
-                    case 'info':
-                        responseText = `
-                            <h3>Информация о боте:</h3>
-                            <p>Этот бот создан для помощи ученикам нашей школы.</p>
-                            <p>Версия: 1.0</p>
-                            <p>Разработчик: Школьный IT-клуб</p>
-                            <p>Контакты: schoolbot@example.com</p>
-                        `;
-                        break;
-                    default:
-                        responseText = '<p>Команда не распознана. Пожалуйста, попробуйте еще раз.</p>';
-                }
-                
-                responseArea.innerHTML = responseText;
-                
-                // В реальном приложении здесь будет код для отправки данных боту:
-                // fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify({
-                //         chat_id: tg.initDataUnsafe.user.id,
-                //         text: command
-                //     })
-                // })
-                // .then(response => response.json())
-                // .then(data => {
-                //     loading.style.display = 'none';
-                //     responseArea.innerHTML = `<p>Ответ бота: ${data.result.text}</p>`;
-                // })
-                // .catch(error => {
-                //     loading.style.display = 'none';
-                //     responseArea.innerHTML = `<p>Ошибка: ${error.message}</p>`;
-                // });
-            }, 1000);
+                addBotMessage(botResponse);
+            }, 500);
         }
     </script>
 </body>
