@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Школьный Бот</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            background-color: #0088cc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .bot-button {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+        .bot-button:hover {
+            background-color: #006699;
+        }
+        .response-area {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 100px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Б</div>
+        <h1>Школьный Бот</h1>
+        <p>Ваш помощник в школьных вопросах</p>
+    </div>
+
+    <div class="button-container">
+        <button class="bot-button" onclick="sendCommand('schedule')">Расписание⏰</button>
+        <button class="bot-button" onclick="sendCommand('bells')">Расписание звонков🔔</button>
+        <button class="bot-button" onclick="sendCommand('fc')">Где ФК?⚽</button>
+        <button class="bot-button" onclick="sendCommand('info')">Инфо🔍</button>
+    </div>
+
+    <div class="loading" id="loading">
+        <p>Загрузка...</p>
+    </div>
+
+    <div class="response-area" id="response">
+        <p>Выберите одну из кнопок выше, чтобы получить информацию.</p>
+    </div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        // Токен вашего бота
+        const BOT_TOKEN = '8063971284:AAE9UsktnRtbMK3SWuJPE8H6bTaHnY1h9HQ';
+        
+        // Функция для отправки команд боту
+        function sendCommand(command) {
+            const responseArea = document.getElementById('response');
+            const loading = document.getElementById('loading');
+            
+            // Показываем индикатор загрузки
+            loading.style.display = 'block';
+            responseArea.innerHTML = '';
+            
+            // Эмуляция ответов бота (в реальном приложении здесь будет запрос к API бота)
+            setTimeout(() => {
+                loading.style.display = 'none';
+                
+                let responseText = '';
+                switch(command) {
+                    case 'schedule':
+                        responseText = `
+                            <h3>Расписание на неделю:</h3>
+                            <p><strong>Понедельник:</strong> Математика, Физика, Литература</p>
+                            <p><strong>Вторник:</strong> История, Химия, Физкультура</p>
+                            <p><strong>Среда:</strong> Биология, Английский, Информатика</p>
+                            <p><strong>Четверг:</strong> География, Русский, ОБЖ</p>
+                            <p><strong>Пятница:</strong> Обществознание, Музыка, Труд</p>
+                        `;
+                        break;
+                    case 'bells':
+                        responseText = `
+                            <h3>Расписание звонков:</h3>
+                            <p>1 урок: 8:30 - 9:15</p>
+                            <p>2 урок: 9:25 - 10:10</p>
+                            <p>3 урок: 10:20 - 11:05</p>
+                            <p>4 урок: 11:25 - 12:10</p>
+                            <p>5 урок: 12:20 - 13:05</p>
+                            <p>6 урок: 13:15 - 14:00</p>
+                            <p>7 урок: 14:10 - 14:55</p>
+                        `;
+                        break;
+                    case 'fc':
+                        responseText = `
+                            <h3>Футбольное поле сегодня:</h3>
+                            <p>⚽ Основное поле: Занято (уроки физкультуры до 14:00)</p>
+                            <p>⚽ Запасное поле: Свободно с 12:00</p>
+                            <p>🏀 Спортивный зал: Свободен после 15:00</p>
+                        `;
+                        break;
+                    case 'info':
+                        responseText = `
+                            <h3>Информация о боте:</h3>
+                            <p>Этот бот создан для помощи ученикам нашей школы.</p>
+                            <p>Версия: 1.0</p>
+                            <p>Разработчик: Школьный IT-клуб</p>
+                            <p>Контакты: schoolbot@example.com</p>
+                        `;
+                        break;
+                    default:
+                        responseText = '<p>Команда не распознана. Пожалуйста, попробуйте еще раз.</p>';
+                }
+                
+                responseArea.innerHTML = responseText;
+                
+                // В реальном приложении здесь будет код для отправки данных боту:
+                // fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({
+                //         chat_id: tg.initDataUnsafe.user.id,
+                //         text: command
+                //     })
+                // })
+                // .then(response => response.json())
+                // .then(data => {
+                //     loading.style.display = 'none';
+                //     responseArea.innerHTML = `<p>Ответ бота: ${data.result.text}</p>`;
+                // })
+                // .catch(error => {
+                //     loading.style.display = 'none';
+                //     responseArea.innerHTML = `<p>Ошибка: ${error.message}</p>`;
+                // });
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
