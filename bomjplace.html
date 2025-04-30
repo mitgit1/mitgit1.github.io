@@ -1,0 +1,73 @@
+<!DOCTYPE html>  
+<html lang="ru">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>BomjPlace NextGen</title>  
+    <style>  
+        body {  
+            margin: 0;  
+            height: 100vh;  
+            background: #000;  
+            overflow: hidden;  
+            position: relative;  
+        }  
+
+        .blood-text {  
+            position: fixed;  
+            top: 50%;  
+            left: 50%;  
+            transform: translate(-50%, -50%);  
+            font-family: 'Arial Black', sans-serif;  
+            font-size: 8vw;  
+            color: #ff0000;  
+            text-shadow: 0 0 30px #ff000055;  
+            filter: blur(3px) contrast(200%);  
+            opacity: 0.3;  
+            z-index: 0;  
+            pointer-events: none;  
+            user-select: none;  
+        }  
+
+        .ustav-btn {  
+            position: fixed;  
+            top: 20px;  
+            right: 20px;  
+            padding: 15px 30px;  
+            background: #8b0000;  
+            color: #fff !important;  
+            text-decoration: none;  
+            border-radius: 5px;  
+            font-family: 'Courier New', monospace;  
+            font-weight: bold;  
+            border: 2px solid #450000;  
+            box-shadow: 0 0 15px #ff000080;  
+            transition: 0.3s;  
+            z-index: 999;  
+        }  
+
+        .ustav-btn:hover {  
+            background: #ff0000;  
+            transform: scale(1.1);  
+            text-shadow: 0 0 10px #fff;  
+        }  
+    </style>  
+</head>  
+<body>  
+    <!-- Кровавый фон -->  
+    <div class="blood-text">BomjPlace (NewG)</div>  
+
+    <!-- Кнопка-артефакт -->  
+    <a href="https://mitgit1.github.io/bp_ustav" class="ustav-btn">УСТАВ ГЕТТО</a>  
+
+    <!-- Секретный эффект -->  
+    <script>  
+        document.body.addEventListener('mousemove', (e) => {  
+            const text = document.querySelector('.blood-text');  
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;  
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;  
+            text.style.transform = `translate(-50%, -50%) rotateX(${y}deg) rotateY(${x}deg)`;  
+        });  
+    </script>  
+</body>  
+</html>  
