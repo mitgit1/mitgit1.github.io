@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Matrix Interface</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+
+        .matrix-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            filter: blur(5px);
+            z-index: -1;
+            color: #0f0;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .matrix-text {
+            position: absolute;
+            opacity: 0.8;
+            font-size: 24px;
+        }
+
+        .nav-container {
+            position: fixed;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-button {
+            background: #000;
+            color: #0f0;
+            border: 2px solid #0f0;
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .nav-button:hover {
+            background: #0f0;
+            color: #000;
+            box-shadow: 0 0 15px #0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-container" id="matrix"></div>
+    
+    <div class="nav-container">
+        <button class="nav-button">Инструкции</button>
+        <button class="nav-button">Инструменты</button>
+        <button class="nav-button">Интернет-ресурсы</button>
+        <button class="nav-button">Полезное</button>
+    </div>
+
+    <script>
+        // Генерация матричного эффекта
+        function createMatrix() {
+            const container = document.getElementById('matrix');
+            const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトホモヨョロヲゴゾドボポヴッン';
+            
+            function createStream() {
+                const element = document.createElement('div');
+                element.className = 'matrix-text';
+                element.style.left = Math.random() * 100 + 'vw';
+                element.style.animationDuration = Math.random() * 3 + 2 + 's';
+                
+                let text = '';
+                for(let i = 0; i < 50; i++) {
+                    text += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                
+                element.innerHTML = text;
+                container.appendChild(element);
+                
+                setTimeout(() => element.remove(), 5000);
+            }
+
+            setInterval(createStream, 100);
+            setInterval(() => {
+                const elements = document.querySelectorAll('.matrix-text');
+                elements.forEach(el => {
+                    el.style.top = el.offsetTop + 30 + 'px';
+                });
+            }, 500);
+        }
+
+        createMatrix();
+    </script>
+</body>
+</html>
