@@ -2,36 +2,34 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Vertical Matrix</title>
+    <title>SNGDOMOFONS LOVE</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
             font-family: 'Courier New', monospace;
+            background: #000;
         }
 
         .matrix-container {
             position: fixed;
             width: 100%;
             height: 100%;
-            filter: blur(2px); /* Размытие ~5% */
+            filter: blur(2px);
             z-index: -1;
             color: #0f0;
-            background: #000;
             overflow: hidden;
         }
 
-        .matrix-column {
+        .matrix-row {
             position: absolute;
-            top: -100%;
-            animation: fall linear infinite;
             white-space: nowrap;
-            writing-mode: vertical-rl;
-            text-orientation: upright;
+            animation: flow linear infinite;
         }
 
-        @keyframes fall {
-            to { top: 100%; }
+        @keyframes flow {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
 
         .nav-container {
@@ -41,13 +39,16 @@
             display: flex;
             justify-content: center;
             gap: 20px;
+            background: #000;
+            padding: 15px 0;
+            border-bottom: 1px solid #fff;
         }
 
         .nav-button {
-            background: #000;
+            background: transparent;
             color: #0f0;
             border: 2px solid #0f0;
-            padding: 15px 30px;
+            padding: 12px 25px;
             cursor: pointer;
             transition: all 0.3s;
             text-transform: uppercase;
@@ -74,23 +75,23 @@
     <script>
         function createMatrix() {
             const container = document.getElementById('matrix');
-            const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトホモヨョロヲゴゾドボポヴッン';
+            const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトホモヨョロヲゴゾドボポヴッンQWERTYUIOPASDFGHJKLZXCVBNM';
             
-            // Создаем 20 вертикальных колонок
-            for(let i = 0; i < 20; i++) {
-                const column = document.createElement('div');
-                column.className = 'matrix-column';
-                column.style.left = `${(100 / 20) * i}%`;
-                column.style.animationDuration = `${Math.random() * 5 + 3}s`;
+            // Создаем 15 горизонтальных строк
+            for(let i = 0; i < 15; i++) {
+                const row = document.createElement('div');
+                row.className = 'matrix-row';
+                row.style.top = `${(100 / 15) * i}%`;
+                row.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                row.style.fontSize = `${Math.random() * 10 + 12}px`;
                 
-                // Заполняем колонку символами
                 let content = '';
-                for(let j = 0; j < 40; j++) {
-                    content += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+                for(let j = 0; j < 150; j++) {
+                    content += chars[Math.floor(Math.random() * chars.length)];
                 }
-                column.innerHTML = content;
+                row.textContent = content;
                 
-                container.appendChild(column);
+                container.appendChild(row);
             }
         }
 
