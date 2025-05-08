@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Matrix Interface</title>
+    <title>Vertical Matrix</title>
     <style>
         body {
             margin: 0;
@@ -14,17 +14,24 @@
             position: fixed;
             width: 100%;
             height: 100%;
-            filter: blur(5px);
+            filter: blur(2px); /* Размытие ~5% */
             z-index: -1;
             color: #0f0;
             background: #000;
             overflow: hidden;
         }
 
-        .matrix-text {
+        .matrix-column {
             position: absolute;
-            opacity: 0.8;
-            font-size: 24px;
+            top: -100%;
+            animation: fall linear infinite;
+            white-space: nowrap;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+        }
+
+        @keyframes fall {
+            to { top: 100%; }
         }
 
         .nav-container {
@@ -65,35 +72,26 @@
     </div>
 
     <script>
-        // Генерация матричного эффекта
         function createMatrix() {
             const container = document.getElementById('matrix');
             const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトホモヨョロヲゴゾドボポヴッン';
             
-            function createStream() {
-                const element = document.createElement('div');
-                element.className = 'matrix-text';
-                element.style.left = Math.random() * 100 + 'vw';
-                element.style.animationDuration = Math.random() * 3 + 2 + 's';
+            // Создаем 20 вертикальных колонок
+            for(let i = 0; i < 20; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = `${(100 / 20) * i}%`;
+                column.style.animationDuration = `${Math.random() * 5 + 3}s`;
                 
-                let text = '';
-                for(let i = 0; i < 50; i++) {
-                    text += chars.charAt(Math.floor(Math.random() * chars.length));
+                // Заполняем колонку символами
+                let content = '';
+                for(let j = 0; j < 40; j++) {
+                    content += chars[Math.floor(Math.random() * chars.length)] + '<br>';
                 }
+                column.innerHTML = content;
                 
-                element.innerHTML = text;
-                container.appendChild(element);
-                
-                setTimeout(() => element.remove(), 5000);
+                container.appendChild(column);
             }
-
-            setInterval(createStream, 100);
-            setInterval(() => {
-                const elements = document.querySelectorAll('.matrix-text');
-                elements.forEach(el => {
-                    el.style.top = el.offsetTop + 30 + 'px';
-                });
-            }, 500);
         }
 
         createMatrix();
