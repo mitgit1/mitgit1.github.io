@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Отсчет до 2026 года</title>
     <style>
+        /* Подключаем локальный шрифт */
+        @font-face {
+            font-family: 'Junegull';
+            src: url('font.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -13,26 +21,96 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: Arial, sans-serif;
+            font-family: 'Junegull', Arial, sans-serif;
             color: white;
             text-align: center;
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            flex-direction: column;
         }
 
-        #countdown {
-            font-size: 3em;
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .countdown-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 800px;
+        }
+
+        .countdown-item {
+            margin: 0 15px;
+            min-width: 120px;
+        }
+
+        .countdown-value {
+            font-size: 4em;
             font-weight: bold;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 1.5em;
+            margin-top: -5px;
         }
 
         @media (max-width: 768px) {
-            #countdown {
+            .title {
                 font-size: 2em;
+                margin-bottom: 20px;
+            }
+            .countdown-value {
+                font-size: 3em;
+            }
+            .countdown-label {
+                font-size: 1.2em;
+            }
+            .countdown-item {
+                min-width: 90px;
+                margin: 0 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.5em;
+                margin-bottom: 15px;
+            }
+            .countdown-value {
+                font-size: 2em;
+            }
+            .countdown-label {
+                font-size: 1em;
+            }
+            .countdown-item {
+                min-width: 70px;
+                margin: 0 5px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="countdown">Загрузка...</div>
+    <div class="title">До Нового 2026 года!</div>
+    <div class="countdown-container">
+        <div class="countdown-item">
+            <div class="countdown-value" id="days">0</div>
+            <div class="countdown-label">дней</div>
+        </div>
+        <div class="countdown-item">
+            <div class="countdown-value" id="hours">0</div>
+            <div class="countdown-label">часов</div>
+        </div>
+        <div class="countdown-item">
+            <div class="countdown-value" id="minutes">0</div>
+            <div class="countdown-label">минут</div>
+        </div>
+        <div class="countdown-item">
+            <div class="countdown-value" id="seconds">0</div>
+            <div class="countdown-label">секунд</div>
+        </div>
+    </div>
 
     <script>
         function updateCountdown() {
@@ -43,7 +121,8 @@
 
             // Если дата наступила
             if (diff <= 0) {
-                document.getElementById('countdown').innerHTML = "С Новым 2026 годом!";
+                document.body.innerHTML = 
+                    "<div style='display:flex; justify-content:center; align-items:center; height:100vh; font-family:Junegull, Arial, sans-serif; font-size:3em; text-align:center; padding:20px;'>С Новым 2026 годом!</div>";
                 return;
             }
 
@@ -53,13 +132,11 @@
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            // Форматируем вывод
-            document.getElementById('countdown').innerHTML = `
-                ${days} дн ${hours} ч ${minutes} мин ${seconds} сек
-                <div style="font-size: 0.6em; margin-top: 10px;">
-                    
-                </div>
-            `;
+            // Обновляем значения
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
         }
 
         // Обновляем каждую секунду
