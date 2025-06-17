@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отсчет до 2026 года</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #008000; /* Зеленый фон */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #countdown {
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            #countdown {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="countdown">Загрузка...</div>
+
+    <script>
+        function updateCountdown() {
+            // Устанавливаем целевую дату: 1 января 2026, 00:00 UTC+3
+            const targetDate = new Date('2026-01-01T00:00:00+03:00');
+            const now = new Date();
+            const diff = targetDate - now;
+
+            // Если дата наступила
+            if (diff <= 0) {
+                document.getElementById('countdown').innerHTML = "С Новым 2026 годом!";
+                return;
+            }
+
+            // Рассчитываем оставшееся время
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            // Форматируем вывод
+            document.getElementById('countdown').innerHTML = `
+                ${days} дн ${hours} ч ${minutes} мин ${seconds} сек
+                <div style="font-size: 0.6em; margin-top: 10px;">
+                    
+                </div>
+            `;
+        }
+
+        // Обновляем каждую секунду
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Первоначальный запуск
+    </script>
+</body>
+</html>
