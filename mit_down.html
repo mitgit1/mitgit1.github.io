@@ -75,66 +75,142 @@
         
         .section {
             min-height: 100vh;
-            padding: 100px 50px 30px; /* Увеличено слева */
+            padding: 100px 50px 30px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             position: relative;
+            overflow: hidden;
         }
         
-        .section::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
+        .section-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
             width: 100%;
-            height: 150px; /* Высота градиентного перехода */
-            z-index: 1;
         }
         
         .section-title {
             font-size: 48px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             color: #fff;
-            text-align: left; /* Выравнивание по левому краю */
-            width: 100%;
+            text-align: left;
+            position: relative;
+            padding-left: 10px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, #ff0000, #0000ff);
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #aaa;
+            margin-bottom: 40px;
+            text-align: left;
+            font-weight: normal;
         }
         
         .placeholder {
-            font-size: 24px;
+            font-size: 20px;
             color: #aaa;
-            text-align: left; /* Выравнивание по левому краю */
-            max-width: 600px;
+            text-align: left;
+            max-width: 800px;
             line-height: 1.6;
             width: 100%;
         }
         
-        /* Градиенты для секций */
-        #cameras {
+        /* Эффект песочных часов для переходов */
+        .hourglass-effect {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to bottom, 
+                rgba(0,0,0,0) 0%, 
+                rgba(0,0,0,0.8) 50%, 
+                rgba(0,0,0,0) 100%);
+            mask: radial-gradient(ellipse at center, 
+                rgba(0,0,0,1) 0%, 
+                rgba(0,0,0,0) 70%);
+            -webkit-mask: radial-gradient(ellipse at center, 
+                rgba(0,0,0,1) 0%, 
+                rgba(0,0,0,0) 70%);
+            z-index: 1;
+        }
+        
+        /* Цвета фона для секций */
+        #cameras { 
             background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
         }
-        #games {
+        #games { 
             background: linear-gradient(135deg, #0a0a1a 0%, #00000a 100%);
         }
-        #music {
+        #music { 
             background: linear-gradient(135deg, #1a0a0a 0%, #0a0000 100%);
         }
-        #jaley {
+        #jaley { 
             background: linear-gradient(135deg, #0a1a0a 0%, #000a00 100%);
         }
         
-        /* Градиентные переходы между секциями */
+        /* Переходы между секциями */
         #cameras::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+            height: 200px;
             background: linear-gradient(to bottom, #0a0a0a, #00000a);
+            border-radius: 50% / 100% 100% 0 0;
+            transform: perspective(100px) rotateX(30deg);
+            z-index: 1;
         }
+        
         #games::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+            height: 200px;
             background: linear-gradient(to bottom, #00000a, #0a0000);
+            border-radius: 50% / 100% 100% 0 0;
+            transform: perspective(100px) rotateX(30deg);
+            z-index: 1;
         }
+        
         #music::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+            height: 200px;
             background: linear-gradient(to bottom, #0a0000, #000a00);
+            border-radius: 50% / 100% 100% 0 0;
+            transform: perspective(100px) rotateX(30deg);
+            z-index: 1;
         }
+        
         #jaley::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+            height: 200px;
             background: linear-gradient(to bottom, #000a00, #000);
+            border-radius: 50% / 100% 100% 0 0;
+            transform: perspective(100px) rotateX(30deg);
+            z-index: 1;
         }
     </style>
 </head>
@@ -149,40 +225,54 @@
         </div>
     </div>
     
-    <!-- Секция камеры -->
     <section id="cameras" class="section">
-        <h2 class="section-title">КАМЕРЫ</h2>
-        <div class="placeholder">
-            Контент камер появится здесь
+        <div class="hourglass-effect"></div>
+        <div class="section-content">
+            <h2 class="section-title">КАМЕРЫ</h2>
+            <h3 class="subtitle">Высококачественные камеры наблюдения</h3>
+            <div class="placeholder">
+                Профессиональные системы видеонаблюдения для дома и бизнеса. 
+                Камеры с ночным видением, детекцией движения и облачным хранением.
+            </div>
         </div>
     </section>
     
-    <!-- Секция игры -->
     <section id="games" class="section">
-        <h2 class="section-title">ИГРЫ</h2>
-        <div class="placeholder">
-            Игровой раздел будет здесь
+        <div class="hourglass-effect"></div>
+        <div class="section-content">
+            <h2 class="section-title">ИГРЫ</h2>
+            <h3 class="subtitle">Эксклюзивные игровые проекты</h3>
+            <div class="placeholder">
+                Инновационные игры от независимых разработчиков. Эксклюзивные релизы, 
+                ранний доступ и специальные предложения для наших подписчиков.
+            </div>
         </div>
     </section>
     
-    <!-- Секция музыка -->
     <section id="music" class="section">
-        <h2 class="section-title">МУЗЫКА</h2>
-        <div class="placeholder">
-            Музыкальная коллекция появится здесь
+        <div class="hourglass-effect"></div>
+        <div class="section-content">
+            <h2 class="section-title">МУЗЫКА</h2>
+            <h3 class="subtitle">Электронная музыка и саундтреки</h3>
+            <div class="placeholder">
+                Коллекция эксклюзивных треков, миксов и саундтреков. 
+                Музыка в стиле ambient, techno и experimental электроника.
+            </div>
         </div>
     </section>
     
-    <!-- Секция jaley -->
     <section id="jaley" class="section">
-        <h2 class="section-title">JALEY</h2>
-        <div class="placeholder">
-            Секция Jaley будет здесь
+        <div class="section-content">
+            <h2 class="section-title">JALEY</h2>
+            <h3 class="subtitle">Экспериментальные проекты</h3>
+            <div class="placeholder">
+                Лаборатория инновационных технологий и экспериментальных разработок. 
+                Уникальные проекты на стыке искусства, технологий и науки.
+            </div>
         </div>
     </section>
 
     <script>
-        // Проверка загрузки шрифта
         document.fonts.ready.then(() => {
             console.log("Custom font loaded successfully");
         }).catch((error) => {
@@ -215,6 +305,21 @@
                 } else {
                     button.style.backgroundColor = '';
                     button.style.color = '#ddd';
+                }
+            });
+        });
+        
+        // Параллакс-эффект для заголовков
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const scrollPosition = window.pageYOffset;
+            
+            sections.forEach(section => {
+                const title = section.querySelector('.section-title');
+                if(title) {
+                    const speed = 0.2;
+                    const offset = scrollPosition * speed;
+                    title.style.transform = `translateX(${offset * 0.5}px)`;
                 }
             });
         });
