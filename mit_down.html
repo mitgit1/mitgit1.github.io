@@ -14,7 +14,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: smooth; /* Плавная прокрутка */
+            scroll-behavior: smooth;
         }
         
         body {
@@ -27,7 +27,7 @@
         .header {
             background-color: #333;
             height: 80px;
-            position: fixed; /* Фиксированная шапка */
+            position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
@@ -75,32 +75,66 @@
         
         .section {
             min-height: 100vh;
-            padding: 100px 30px 30px; /* Учитываем фиксированную шапку */
+            padding: 100px 50px 30px; /* Увеличено слева */
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            position: relative;
+        }
+        
+        .section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px; /* Высота градиентного перехода */
+            z-index: 1;
         }
         
         .section-title {
             font-size: 48px;
             margin-bottom: 40px;
-            text-align: center;
             color: #fff;
+            text-align: left; /* Выравнивание по левому краю */
+            width: 100%;
         }
-        
-        /* Разные цвета фона для секций */
-        #cameras { background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); }
-        #games { background: linear-gradient(135deg, #0a0a1a 0%, #00000a 100%); }
-        #music { background: linear-gradient(135deg, #1a0a0a 0%, #0a0000 100%); }
-        #jaley { background: linear-gradient(135deg, #0a1a0a 0%, #000a00 100%); }
         
         .placeholder {
             font-size: 24px;
             color: #aaa;
-            text-align: center;
+            text-align: left; /* Выравнивание по левому краю */
             max-width: 600px;
             line-height: 1.6;
+            width: 100%;
+        }
+        
+        /* Градиенты для секций */
+        #cameras {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        }
+        #games {
+            background: linear-gradient(135deg, #0a0a1a 0%, #00000a 100%);
+        }
+        #music {
+            background: linear-gradient(135deg, #1a0a0a 0%, #0a0000 100%);
+        }
+        #jaley {
+            background: linear-gradient(135deg, #0a1a0a 0%, #000a00 100%);
+        }
+        
+        /* Градиентные переходы между секциями */
+        #cameras::after {
+            background: linear-gradient(to bottom, #0a0a0a, #00000a);
+        }
+        #games::after {
+            background: linear-gradient(to bottom, #00000a, #0a0000);
+        }
+        #music::after {
+            background: linear-gradient(to bottom, #0a0000, #000a00);
+        }
+        #jaley::after {
+            background: linear-gradient(to bottom, #000a00, #000);
         }
     </style>
 </head>
