@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIT DOWN</title>
+    <style>
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('font.ttf') format('truetype');
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'CustomFont', Arial, sans-serif;
+            height: 100vh;
+        }
+        
+        .header {
+            background-color: #333; /* Серый фон верхней части */
+            height: 80px; /* Высота верхней области */
+            position: relative;
+            border-bottom: 1px solid #aaa; /* Светло-серая разделительная полоса */
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px; /* Отступ сверху */
+            left: 20px; /* Отступ слева */
+            font-size: 24px;
+            padding: 5px 10px;
+            color: #fff;
+        }
+        
+        .content {
+            padding: 20px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">MIT DOWN</div>
+    </div>
+    
+    <div class="content">
+        <h1>Welcome to MIT DOWN</h1>
+        <p>This is the main content area with a black background.</p>
+        <p>The top section has a gray background separated by a light gray line.</p>
+    </div>
+
+    <script>
+        // Проверка загрузки шрифта
+        document.fonts.ready.then(() => {
+            console.log("Custom font loaded successfully");
+        }).catch((error) => {
+            console.error("Error loading custom font:", error);
+            document.querySelector('.logo').style.fontFamily = "Arial, sans-serif";
+        });
+    </script>
+</body>
+</html>
