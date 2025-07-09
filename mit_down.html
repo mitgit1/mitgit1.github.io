@@ -14,6 +14,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scroll-behavior: smooth; /* Плавная прокрутка */
         }
         
         body {
@@ -24,18 +25,21 @@
         }
         
         .header {
-            background-color: #333; /* Серый фон верхней части */
-            height: 80px; /* Высота верхней области */
-            position: relative;
-            border-bottom: 1px solid #aaa; /* Светло-серая разделительная полоса */
+            background-color: #333;
+            height: 80px;
+            position: fixed; /* Фиксированная шапка */
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #aaa;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .logo {
-            font-size: 42px; /* Увеличенный размер шрифта */
-            padding: 5px 20px; /* Отступы слева */
+            font-size: 42px;
+            padding: 5px 20px;
             color: #fff;
             font-weight: bold;
             letter-spacing: 1px;
@@ -56,7 +60,8 @@
             text-decoration: none;
             font-size: 18px;
             transition: all 0.3s ease;
-            border-left: 1px solid #444; /* Разделитель между кнопками */
+            border-left: 1px solid #444;
+            cursor: pointer;
         }
         
         .nav-button:last-child {
@@ -68,17 +73,34 @@
             color: #fff;
         }
         
-        .content {
-            padding: 30px;
-            color: #ccc;
-            font-size: 18px;
-            line-height: 1.6;
+        .section {
+            min-height: 100vh;
+            padding: 100px 30px 30px; /* Учитываем фиксированную шапку */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         
-        h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
+        .section-title {
+            font-size: 48px;
+            margin-bottom: 40px;
+            text-align: center;
             color: #fff;
+        }
+        
+        /* Разные цвета фона для секций */
+        #cameras { background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); }
+        #games { background: linear-gradient(135deg, #0a0a1a 0%, #00000a 100%); }
+        #music { background: linear-gradient(135deg, #1a0a0a 0%, #0a0000 100%); }
+        #jaley { background: linear-gradient(135deg, #0a1a0a 0%, #000a00 100%); }
+        
+        .placeholder {
+            font-size: 24px;
+            color: #aaa;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -86,19 +108,44 @@
     <div class="header">
         <div class="logo">MIT DOWN</div>
         <div class="nav-buttons">
-            <a href="#" class="nav-button">камеры</a>
-            <a href="#" class="nav-button">игры</a>
-            <a href="#" class="nav-button">музыка</a>
-            <a href="#" class="nav-button">jaley</a>
+            <a href="#cameras" class="nav-button">камеры</a>
+            <a href="#games" class="nav-button">игры</a>
+            <a href="#music" class="nav-button">музыка</a>
+            <a href="#jaley" class="nav-button">jaley</a>
         </div>
     </div>
     
-    <div class="content">
-        <h1>Welcome to MIT DOWN</h1>
-        <p>This is the main content area with a black background.</p>
-        <p>The top section has a gray background separated by a light gray line.</p>
-        <p>Navigation buttons are placed at the top right without margins.</p>
-    </div>
+    <!-- Секция камеры -->
+    <section id="cameras" class="section">
+        <h2 class="section-title">КАМЕРЫ</h2>
+        <div class="placeholder">
+            Контент камер появится здесь
+        </div>
+    </section>
+    
+    <!-- Секция игры -->
+    <section id="games" class="section">
+        <h2 class="section-title">ИГРЫ</h2>
+        <div class="placeholder">
+            Игровой раздел будет здесь
+        </div>
+    </section>
+    
+    <!-- Секция музыка -->
+    <section id="music" class="section">
+        <h2 class="section-title">МУЗЫКА</h2>
+        <div class="placeholder">
+            Музыкальная коллекция появится здесь
+        </div>
+    </section>
+    
+    <!-- Секция jaley -->
+    <section id="jaley" class="section">
+        <h2 class="section-title">JALEY</h2>
+        <div class="placeholder">
+            Секция Jaley будет здесь
+        </div>
+    </section>
 
     <script>
         // Проверка загрузки шрифта
@@ -107,6 +154,35 @@
         }).catch((error) => {
             console.error("Error loading custom font:", error);
             document.querySelector('.logo').style.fontFamily = "Arial, sans-serif";
+        });
+        
+        // Подсветка активной кнопки
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navButtons = document.querySelectorAll('.nav-button');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if(pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navButtons.forEach(button => {
+                button.classList.remove('active');
+                if(button.getAttribute('href').substring(1) === current) {
+                    button.classList.add('active');
+                    button.style.backgroundColor = '#555';
+                    button.style.color = '#fff';
+                } else {
+                    button.style.backgroundColor = '';
+                    button.style.color = '#ddd';
+                }
+            });
         });
     </script>
 </body>
